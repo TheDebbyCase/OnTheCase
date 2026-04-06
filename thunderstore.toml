@@ -1,0 +1,37 @@
+[config]
+schemaVersion = "0.0.1"
+
+[package]
+namespace = "deB"
+name = "On-TheCase"
+versionNumber = "0.0.1"
+description = "A library for modders to add custom cosmetics"
+websiteUrl = "https://github.com/TheDebbyCase/OnTheCase"
+containsNsfwContent = false
+[package.dependencies]
+BepInEx-BepInExPack = "5.4.2304"
+deB-FixPluginTypesSerialization = "1.0.0"
+
+[build]
+icon = "./icon.png"
+readme = "./README.md"
+outdir = "."
+
+[[build.copy]]
+source = "./OnTheCase/Builds/Debug/netstandard2.1/OnTheCase.dll"
+target = "BepInEx/plugins/OnTheCase/OnTheCase.dll"
+
+[[build.copy]]
+source = "./CHANGELOG.md"
+target = "./CHANGELOG.md"
+
+[[build.copy]]
+source = "./LICENSE"
+target = "./LICENSE"
+
+[publish]
+communities = ["on-together"]
+[publish.categories]
+on-together = ["mods", "tools", "libraries"]
+
+
