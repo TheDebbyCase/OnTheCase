@@ -1352,6 +1352,14 @@ namespace OnTheCase.Utils
     }
     public struct IDKeys : IPackedAuto
     {
+        public IDKeys(Dictionary<int, string> ids)
+        {
+            pairs = (Dictionary<string, int>)ids.Select((x) => new KeyValuePair<string, int>(x.Value, x.Key));
+        }
+        public IDKeys(Dictionary<string, int> ids)
+        {
+            pairs = ids;
+        }
         public Dictionary<string, int> pairs;
     }
     public enum CosmeticType

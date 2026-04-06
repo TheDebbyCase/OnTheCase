@@ -31,11 +31,7 @@ namespace OnTheCase
         internal static IDKeys AddOrSetLocalIDKey()
         {
             ulong steamID = SteamUser.GetSteamID().m_SteamID;
-            IDKeys keys = new IDKeys { pairs = new Dictionary<string, int>() };
-            foreach (KeyValuePair<string, ModdedCustomizationData> pair in moddedData)
-            {
-                keys.pairs.Add(pair.Key, pair.Value.targetID);
-            }
+            IDKeys keys = new IDKeys(CaseUtils.ModdedIDs);
             AddOrSetIDKey(steamID, keys);
             return keys;
         }
