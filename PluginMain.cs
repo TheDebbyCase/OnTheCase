@@ -7,7 +7,6 @@ using OnTheCase.Config;
 using OnTheCase.Utils;
 using System.Collections.Generic;
 using System.IO;
-using System;
 namespace OnTheCase
 {
     [BepInPlugin(modGUID, modName, modVersion)]
@@ -49,49 +48,15 @@ namespace OnTheCase
             [OutfitType.Umbrella] = new List<CustomOutfit>()
         };
         public GameObject Dummy { get; private set; } = null!;
-        //temp
-        internal List<CustomCosmetic> tempcosmetics = new List<CustomCosmetic>();
-        //temp
         void Awake()
         {
-            InitializeMethods();
             Instance ??= this;
             Log = Logger;
             DataLocation = SaveLocation();
             ModConfig = new CaseConfig(Config);
             GetDummy();
-            //temp
-            for (int i = 0; i < tempcosmetics.Count; i++)
-            {
-                CaseUtils.RegisterCosmetic(Info, tempcosmetics[i]);
-            }
-            //temp
             HandleHarmony();
             Log.LogInfo($"{modName} successfully loaded");
-        }
-        static void InitializeMethods()
-        {
-            Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
-            for (int i = 0; i < assemblyTypes.Length; i++)
-            {
-                MethodInfo[] typeMethods = assemblyTypes[i].GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-                for (int j = 0; j < typeMethods.Length; j++)
-                {
-                    object[] methodAttributes;
-                    try
-                    {
-                        methodAttributes = typeMethods[j].GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                    if (methodAttributes.Length > 0)
-                    {
-                        typeMethods[j].Invoke(null, null);
-                    }
-                }
-            }
         }
         string SaveLocation()
         {
@@ -124,20 +89,6 @@ namespace OnTheCase
                             }
                             break;
                         }
-                    //temp
-                    case "assets/onthecase/cosmetics":
-                        {
-                            try
-                            {
-                                tempcosmetics.Add(bundle.LoadAsset<CustomCosmetic>(allAssetPaths[i]));
-                            }
-                            catch
-                            {
-                                continue;
-                            }
-                            break;
-                        }
-                    //temp
                     default:
                         {
                             Log.LogWarning($"\"{assetType}\" is not a known asset path, skipping.");

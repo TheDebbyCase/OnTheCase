@@ -10,52 +10,6 @@ using System.Reflection.Emit;
 namespace OnTheCase.Patches
 {
     [HarmonyPatch(typeof(PlayerCustomizationController))]
-    public class PlayerCustomizationControllerPatches
-    {
-        [HarmonyPatch(nameof(PlayerCustomizationController.NotifyOtherClients))]
-        [HarmonyPrefix]
-        public static bool NotifyOtherClientsPre(PlayerCustomizationController __instance)
-        {
-            CaseMod.Instance.Log.LogDebug($"Running {nameof(PlayerCustomizationController)}.{nameof(PlayerCustomizationController.NotifyOtherClients)}");
-            return true;
-        }
-        [HarmonyPatch(nameof(PlayerCustomizationController.HandleRPCGenerated_6))]
-        [HarmonyPrefix]
-        public static bool HandleRPCGenerated_6Pre(PlayerCustomizationController __instance)
-        {
-            CaseMod.Instance.Log.LogDebug($"Running {nameof(PlayerCustomizationController)}.{nameof(PlayerCustomizationController.HandleRPCGenerated_6)}");
-            return true;
-        }
-        [HarmonyPatch(nameof(PlayerCustomizationController.UpdateNewPlayer))]
-        [HarmonyPrefix]
-        public static bool UpdateNewPlayerPre(PlayerCustomizationController __instance)
-        {
-            CaseMod.Instance.Log.LogDebug($"Running {nameof(PlayerCustomizationController)}.{nameof(PlayerCustomizationController.UpdateNewPlayer)}");
-            return true;
-        }
-        [HarmonyPatch(nameof(PlayerCustomizationController.HandleRPCGenerated_5))]
-        [HarmonyPrefix]
-        public static bool HandleRPCGenerated_5Pre(PlayerCustomizationController __instance)
-        {
-            CaseMod.Instance.Log.LogDebug($"Running {nameof(PlayerCustomizationController)}.{nameof(PlayerCustomizationController.HandleRPCGenerated_5)}");
-            return true;
-        }
-        [HarmonyPatch(nameof(PlayerCustomizationController.NotifyOtherClientsUpdate))]
-        [HarmonyPrefix]
-        public static bool NotifyOtherClientsUpdatePre(PlayerCustomizationController __instance)
-        {
-            CaseMod.Instance.Log.LogDebug($"Running {nameof(PlayerCustomizationController)}.{nameof(PlayerCustomizationController.NotifyOtherClientsUpdate)}");
-            return false;
-        }
-        [HarmonyPatch(nameof(PlayerCustomizationController.HandleRPCGenerated_7))]
-        [HarmonyPrefix]
-        public static bool HandleRPCGenerated_7Pre(PlayerCustomizationController __instance)
-        {
-            CaseMod.Instance.Log.LogDebug($"Running {nameof(PlayerCustomizationController)}.{nameof(PlayerCustomizationController.HandleRPCGenerated_7)}");
-            return true;
-        }
-    }
-    [HarmonyPatch(typeof(PlayerCustomizationController))]
     public class PlayerCustomizationControllerNotifyOtherClientsPatch
     {
         [HarmonyPatch(nameof(PlayerCustomizationController.NotifyOtherClients))]

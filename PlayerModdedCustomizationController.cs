@@ -23,7 +23,6 @@ namespace OnTheCase
         }
         internal static void AddOrSetIDKey(ulong steamID, IDKeys keys)
         {
-            CaseMod.Instance.Log.LogDebug($"Setting IDKeys for player {steamID}");
             if (!playerIDKeys.TryAdd(steamID, keys))
             {
                 playerIDKeys[steamID] = keys;
@@ -31,9 +30,7 @@ namespace OnTheCase
         }
         internal static IDKeys AddOrSetLocalIDKey()
         {
-            CaseMod.Instance.Log.LogDebug("Running AddOrSetLocalIDKey");
             ulong steamID = SteamUser.GetSteamID().m_SteamID;
-            CaseMod.Instance.Log.LogDebug("Got Steam ID");
             IDKeys keys = new IDKeys { pairs = new Dictionary<string, int>() };
             foreach (KeyValuePair<string, ModdedCustomizationData> pair in moddedData)
             {
@@ -74,7 +71,6 @@ namespace OnTheCase
                 AppearanceType type = appearanceTypes[i];
                 if (data.GetShapeIndex(CustomizationType.Appearance, (int)type) == from)
                 {
-                    CaseMod.Instance.Log.LogDebug($"Changing {type} from {from} to {to}");
                     data.SetShapeIndex(CustomizationType.Appearance, (int)type, to);
                 }
             }
@@ -84,7 +80,6 @@ namespace OnTheCase
                 OutfitType type = outfitTypes[i];
                 if (data.GetShapeIndex(CustomizationType.Outfit, (int)type) == from)
                 {
-                    CaseMod.Instance.Log.LogDebug($"Changing {type} from {from} to {to}");
                     data.SetShapeIndex(CustomizationType.Outfit, (int)type, to);
                 }
             }
