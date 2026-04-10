@@ -11,7 +11,7 @@ using Unity.Collections;
 using UnityEngine;
 namespace OnTheCase.Utils
 {
-    public static class CaseUtils
+    public static class CosmeticUtils
     {
         internal static readonly HashSet<int> vanillaIDs = new HashSet<int>();
         public static HashSet<int> VanillaIDs
@@ -868,6 +868,11 @@ namespace OnTheCase.Utils
         }
         public static ulong SteamIDFromPlayerID(PlayerID player)
         {
+            if (player.isServer)
+            {
+                CaseMod.Instance.Log.LogDebug($"Player was server!");
+                return 0;
+            }
             PlayerPanelController playerPanel = NetworkSingleton<PlayerPanelController>.I;
             int playerIndex = playerPanel.PlayerIDs.IndexOf(player);
             int steamIDsCount = playerPanel.PlayerSteamIDs.Count;
@@ -920,7 +925,7 @@ namespace OnTheCase.Utils
         }
         public static int IDFromName(string name)
         {
-            if (!ModDataController.moddedData.TryGetValue(name, out ModdedCustomizationData data))
+            if (!ModDataController.moddedCosmeticData.TryGetValue(name, out ModdedCustomizationData data))
             {
                 return -1;
             }
@@ -1165,7 +1170,7 @@ namespace OnTheCase.Utils
                 {
                     continue;
                 }
-                CaseUtils.FixShader(mat);
+                CosmeticUtils.FixShader(mat);
             }
             if (model != null)
             {
@@ -1183,7 +1188,7 @@ namespace OnTheCase.Utils
                 }
                 for (int i = 0; i < toFix.Count; i++)
                 {
-                    CaseUtils.FixShader(toFix[i]);
+                    CosmeticUtils.FixShader(toFix[i]);
                 }
             }
         }
@@ -1354,7 +1359,11 @@ namespace OnTheCase.Utils
     {
         public IDKeys(Dictionary<int, string> ids)
         {
-            pairs = (Dictionary<string, int>)ids.Select((x) => new KeyValuePair<string, int>(x.Value, x.Key));
+            pairs = new Dictionary<string, int>();
+            foreach (KeyValuePair<int, string> pair in ids)
+            {
+                pairs.TryAdd(pair.Value, pair.Key);
+            }
         }
         public IDKeys(Dictionary<string, int> ids)
         {

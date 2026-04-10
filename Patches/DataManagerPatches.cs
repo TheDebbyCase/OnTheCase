@@ -16,6 +16,7 @@ namespace OnTheCase.Patches
         [HarmonyPrefix]
         public static bool AddCustomCustomizations(DataManager __instance)
         {
+            ModDataController.FillModdedData(CosmeticUtils.LoadData());
             CustomizationSettings settings = ScriptableSingleton<CustomizationSettings>.I;
             List<AppearanceGroup> appearanceGroups = settings.AppearanceGroups;
             List<AppearanceGroupForSprite> appearanceSpriteGroups = settings.AppearanceSpriteGroups;
@@ -24,21 +25,21 @@ namespace OnTheCase.Patches
             {
                 for (int j = 0; j < appearanceGroups[i].CustomizationOptions.Count; j++)
                 {
-                    CaseUtils.vanillaIDs.Add(appearanceGroups[i].CustomizationOptions[j].ID);
+                    CosmeticUtils.vanillaIDs.Add(appearanceGroups[i].CustomizationOptions[j].ID);
                 }
             }
             for (int i = 0; i < appearanceSpriteGroups.Count; i++)
             {
                 for (int j = 0; j < appearanceSpriteGroups[i].CustomizationOptions.Count; j++)
                 {
-                    CaseUtils.vanillaIDs.Add(appearanceSpriteGroups[i].CustomizationOptions[j].ID);
+                    CosmeticUtils.vanillaIDs.Add(appearanceSpriteGroups[i].CustomizationOptions[j].ID);
                 }
             }
             for (int i = 0; i < outfitGroups.Count; i++)
             {
                 for (int j = 0; j < outfitGroups[i].CustomizationOptions.Count; j++)
                 {
-                    CaseUtils.vanillaIDs.Add(outfitGroups[i].CustomizationOptions[j].ID);
+                    CosmeticUtils.vanillaIDs.Add(outfitGroups[i].CustomizationOptions[j].ID);
                 }
             }
             for (int i = 0; i < appearanceGroups.Count; i++)
@@ -50,22 +51,22 @@ namespace OnTheCase.Patches
                 {
                     CustomAppearance appearance = appearances[j];
                     int id = -1;
-                    if (ModDataController.moddedData.TryGetValue(appearance.cosmeticName, out ModdedCustomizationData cosmeticData))
+                    string stringID = string.Join('.', appearance.modGUID, appearance.cosmeticName);
+                    if (ModDataController.moddedCosmeticData.TryGetValue(stringID, out ModdedCustomizationData cosmeticData))
                     {
                         id = cosmeticData.targetID;
                     }
-                    int next = CaseUtils.NextAvailableID();
+                    int next = CosmeticUtils.NextAvailableID();
                     if (id < next)
                     {
                         id = next;
                     }
-                    string stringID = string.Join('.', appearance.modGUID, appearance.cosmeticName);
                     ModDataController.NewCosmeticData(stringID, id, appearance.type);
-                    CustomizationOption? option = CaseUtils.AppearanceToOption(appearance, id);
+                    CustomizationOption? option = CosmeticUtils.AppearanceToOption(appearance, id);
                     if (option.HasValue)
                     {
                         options.Add(option.Value);
-                        CaseUtils.moddedIDs.Add(id, stringID);
+                        CosmeticUtils.moddedIDs.Add(id, stringID);
                     }
                 }
                 group.CustomizationOptions.AddRange(options);
@@ -80,22 +81,22 @@ namespace OnTheCase.Patches
                 {
                     CustomAppearance sprite = sprites[j];
                     int id = -1;
-                    if (ModDataController.moddedData.TryGetValue(sprite.cosmeticName, out ModdedCustomizationData cosmeticData))
+                    if (ModDataController.moddedCosmeticData.TryGetValue(sprite.cosmeticName, out ModdedCustomizationData cosmeticData))
                     {
                         id = cosmeticData.targetID;
                     }
-                    int next = CaseUtils.NextAvailableID();
+                    int next = CosmeticUtils.NextAvailableID();
                     if (id < next)
                     {
                         id = next;
                     }
                     string stringID = string.Join('.', sprite.modGUID, sprite.cosmeticName);
                     ModDataController.NewCosmeticData(stringID, id, sprite.type);
-                    CustomizationOptionForSprite? option = CaseUtils.SpriteToOption(sprite, id);
+                    CustomizationOptionForSprite? option = CosmeticUtils.SpriteToOption(sprite, id);
                     if (option.HasValue)
                     {
                         options.Add(option.Value);
-                        CaseUtils.moddedIDs.Add(id, stringID);
+                        CosmeticUtils.moddedIDs.Add(id, stringID);
                     }
                 }
                 group.CustomizationOptions.AddRange(options);
@@ -110,22 +111,22 @@ namespace OnTheCase.Patches
                 {
                     CustomOutfit outfit = outfits[j];
                     int id = -1;
-                    if (ModDataController.moddedData.TryGetValue(outfit.cosmeticName, out ModdedCustomizationData cosmeticData))
+                    if (ModDataController.moddedCosmeticData.TryGetValue(outfit.cosmeticName, out ModdedCustomizationData cosmeticData))
                     {
                         id = cosmeticData.targetID;
                     }
-                    int next = CaseUtils.NextAvailableID();
+                    int next = CosmeticUtils.NextAvailableID();
                     if (id < next)
                     {
                         id = next;
                     }
                     string stringID = string.Join('.', outfit.modGUID, outfit.cosmeticName);
                     ModDataController.NewCosmeticData(stringID, id, outfit.type);
-                    CustomizationOption? option = CaseUtils.OutfitToOption(outfit, id);
+                    CustomizationOption? option = CosmeticUtils.OutfitToOption(outfit, id);
                     if (option.HasValue)
                     {
                         options.Add(option.Value);
-                        CaseUtils.moddedIDs.Add(id, stringID);
+                        CosmeticUtils.moddedIDs.Add(id, stringID);
                     }
                 }
                 group.CustomizationOptions.AddRange(options);
@@ -150,7 +151,7 @@ namespace OnTheCase.Patches
             try
             {
                 writer = File.CreateText(Path.Combine(CaseMod.DataLocation, "data.json"));
-                writer.Write(JsonConvert.SerializeObject(ModDataController.moddedData));
+                writer.Write(JsonConvert.SerializeObject(ModDataController.moddedCosmeticData));
             }
             catch (Exception exception)
             {
@@ -173,7 +174,7 @@ namespace OnTheCase.Patches
         [HarmonyPostfix]
         public static void LoadModdedData(DataManager __instance)
         {
-            ModDataController.FillModdedData(CaseUtils.LoadData());
+            ModDataController.FillModdedData(CosmeticUtils.LoadData());
             __instance.CustomizationData = new CustomizationData(__instance.PlayerDataZip.CurrentCustomizationDataIDs);
         }
     }
@@ -197,7 +198,7 @@ namespace OnTheCase.Patches
                 if (codes[i].LoadsField(targetField))
                 {
                     foundCount++;
-                    codes[i + 10] = new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(CaseUtils), nameof(CaseUtils.StartBought), new Type[] { typeof(int) }));
+                    codes[i + 10] = new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(CosmeticUtils), nameof(CosmeticUtils.StartBought), new Type[] { typeof(int) }));
                     codes.RemoveAt(i + 9);
                     codes.RemoveRange(i - 1, 2);
                     if (foundCount >= 3)

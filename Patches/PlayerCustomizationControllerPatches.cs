@@ -26,7 +26,7 @@ namespace OnTheCase.Patches
                 if (codes[i].Calls(target))
                 {
                     newCodes.Add(new CodeInstruction(OpCodes.Ldloc, (byte)0));
-                    newCodes.Add(new CodeInstruction(OpCodes.Callvirt, newMethod1));
+                    newCodes.Add(new CodeInstruction(OpCodes.Call, newMethod1));
                     newCodes.Add(new CodeInstruction(OpCodes.Call, newMethod2));
                     codes.InsertRange(i + 1, newCodes);
                     break;
@@ -59,9 +59,9 @@ namespace OnTheCase.Patches
                     newCodesPre.Add(new CodeInstruction(OpCodes.Call, newMethod1));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloc_S, (byte)idkeysValue.LocalIndex));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloc_S, (byte)7));
-                    newCodesPost.Add(new CodeInstruction(OpCodes.Callvirt, newMethod2));
+                    newCodesPost.Add(new CodeInstruction(OpCodes.Call, newMethod2));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloca, (byte)0));
-                    newCodesPost.Add(new CodeInstruction(OpCodes.Callvirt, newMethod3));
+                    newCodesPost.Add(new CodeInstruction(OpCodes.Call, newMethod3));
                     codes.InsertRange(i + 3, newCodesPost);
                     codes.InsertRange(i + 1, newCodesPre);
                     break;
@@ -87,7 +87,7 @@ namespace OnTheCase.Patches
                 if (codes[i].Calls(target))
                 {
                     newCodes.Add(new CodeInstruction(OpCodes.Ldloc, (byte)0));
-                    newCodes.Add(new CodeInstruction(OpCodes.Callvirt, newMethod1));
+                    newCodes.Add(new CodeInstruction(OpCodes.Call, newMethod1));
                     newCodes.Add(new CodeInstruction(OpCodes.Call, newMethod2));
                     codes.InsertRange(i + 1, newCodes);
                     break;
@@ -120,9 +120,9 @@ namespace OnTheCase.Patches
                     newCodesPre.Add(new CodeInstruction(OpCodes.Call, newMethod1));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloc_S, (byte)idkeysValue.LocalIndex));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloc_S, (byte)30));
-                    newCodesPost.Add(new CodeInstruction(OpCodes.Callvirt, newMethod2));
+                    newCodesPost.Add(new CodeInstruction(OpCodes.Call, newMethod2));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloca, (byte)2));
-                    newCodesPost.Add(new CodeInstruction(OpCodes.Callvirt, newMethod3));
+                    newCodesPost.Add(new CodeInstruction(OpCodes.Call, newMethod3));
                     codes.InsertRange(i + 3, newCodesPost);
                     codes.InsertRange(i + 1, newCodesPre);
                     break;
@@ -148,7 +148,7 @@ namespace OnTheCase.Patches
                 if (codes[i].Calls(target))
                 {
                     newCodes.Add(new CodeInstruction(OpCodes.Ldloc, (byte)0));
-                    newCodes.Add(new CodeInstruction(OpCodes.Callvirt, newMethod1));
+                    newCodes.Add(new CodeInstruction(OpCodes.Call, newMethod1));
                     newCodes.Add(new CodeInstruction(OpCodes.Call, newMethod2));
                     codes.InsertRange(i + 1, newCodes);
                     break;
@@ -181,9 +181,9 @@ namespace OnTheCase.Patches
                     newCodesPre.Add(new CodeInstruction(OpCodes.Call, newMethod1));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloc_S, (byte)idkeysValue.LocalIndex));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloc_S, (byte)4));
-                    newCodesPost.Add(new CodeInstruction(OpCodes.Callvirt, newMethod2));
+                    newCodesPost.Add(new CodeInstruction(OpCodes.Call, newMethod2));
                     newCodesPost.Add(new CodeInstruction(OpCodes.Ldloca, (byte)0));
-                    newCodesPost.Add(new CodeInstruction(OpCodes.Callvirt, newMethod3));
+                    newCodesPost.Add(new CodeInstruction(OpCodes.Call, newMethod3));
                     codes.InsertRange(i + 3, newCodesPost);
                     codes.InsertRange(i + 1, newCodesPre);
                     break;

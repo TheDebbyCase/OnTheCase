@@ -6,11 +6,11 @@ namespace OnTheCase.Extensions
     {
         public static CustomizationDataIDs2 ReplaceModded(this CustomizationDataIDs2 toReplace, CustomizationDataIDs2 replaceWith)
         {
-            foreach (KeyValuePair<string, ModdedCustomizationData> pair in ModDataController.moddedData)
+            foreach (KeyValuePair<string, ModdedCustomizationData> pair in ModDataController.moddedCosmeticData)
             {
-                if (CaseUtils.IsIDPresent(toReplace, pair.Value.targetID, out int target))
+                if (CosmeticUtils.IsIDPresent(toReplace, pair.Value.targetID, out int target))
                 {
-                    CaseUtils.SetShapeInData(ref toReplace, target, CaseUtils.GetCustomizationsAsArray(replaceWith)[target]);
+                    CosmeticUtils.SetShapeInData(ref toReplace, target, CosmeticUtils.GetCustomizationsAsArray(replaceWith)[target]);
                 }
             }
             return toReplace;
