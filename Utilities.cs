@@ -76,7 +76,7 @@ namespace OnTheCase.Utils
                 _onToShaders?.TryAdd(material.shader.name, shader);
             }
         }
-        public static bool RegisterCosmetic(PluginInfo plugin, CustomCosmetic cosmetic)
+        public static bool RegisterCosmetic(string modID, CustomCosmetic cosmetic)
         {
             CaseMod.Instance.Log.LogInfo($"Registering cosmetic with name {cosmetic.cosmeticName}!");
             bool success = true;
@@ -84,10 +84,10 @@ namespace OnTheCase.Utils
             {
                 if (cosmetic.cosmeticName is null || cosmetic.cosmeticName == string.Empty)
                 {
-                    CaseMod.Instance.Log.LogWarning($"Cosmetic from mod: \"{plugin.Metadata.Name}\" did not have a name!");
+                    CaseMod.Instance.Log.LogWarning($"Cosmetic from mod: \"{modID}\" did not have a name!");
                     return false;
                 }
-                cosmetic.modGUID = plugin.Metadata.GUID;
+                cosmetic.modGUID = modID;
                 cosmetic.FixShaders();
                 if (cosmetic.autoWeight)
                 {
@@ -114,7 +114,7 @@ namespace OnTheCase.Utils
                         }
                     default:
                         {
-                            CaseMod.Instance.Log.LogWarning($"Custom cosmetic type \"{cosmetic.GetType()}\" from plugin \"{plugin.Metadata.Name}\" was unknown!");
+                            CaseMod.Instance.Log.LogWarning($"Custom cosmetic type \"{cosmetic.GetType()}\" from plugin \"{modID}\" was unknown!");
                             success = false;
                             break;
                         }

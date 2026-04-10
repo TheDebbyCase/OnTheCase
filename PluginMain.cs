@@ -7,6 +7,7 @@ using OnTheCase.Config;
 using OnTheCase.Utils;
 using System.Collections.Generic;
 using System.IO;
+using System;
 namespace OnTheCase
 {
     [BepInPlugin(modGUID, modName, modVersion)]
@@ -55,12 +56,37 @@ namespace OnTheCase
             DataLocation = SaveLocation();
             ModConfig = new CaseConfig(Config);
             GetDummy();
+            RegisterFromBundles();
             HandleHarmony();
             Log.LogInfo($"{modName} successfully loaded");
         }
         string SaveLocation()
         {
             return Path.Combine(Directory.GetParent(ConstData.PlayerZipSavePath).FullName, "CaseData");
+        }
+        void RegisterFromBundles()
+        {
+            string[] filePaths = Directory.GetFiles(Paths.PluginPath, "*.case", SearchOption.AllDirectories);
+            for (int i = 0; i < filePaths.Length; i++)
+            {
+                string path = filePaths[i];
+                try
+                {
+                    string modID = path[path.LastIndexOf('/')..];
+                    AssetBundle bundle = AssetBundle.LoadFromFile(path);
+                    CustomCosmetic[] customCosmetics = bundle.LoadAllAssets<CustomCosmetic>();
+                    for (int j = 0; j < customCosmetics.Length; j++)
+                    {
+                        CosmeticUtils.RegisterCosmetic(modID, customCosmetics[j]);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.LogError($"Failed to load asset bundle at path \"{path}\"");
+                    Log.LogError(exception);
+                    continue;
+                }
+            }
         }
         void GetDummy()
         {
